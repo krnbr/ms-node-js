@@ -7,6 +7,7 @@ const app: express.Application = express();
 
 const PORT = 3000;
 const HOST = 'localhost';
+const IS_STANDALONE:boolean = true;
 
 const client = new Eureka({
     instance: {
@@ -37,22 +38,24 @@ const client = new Eureka({
 });
 
 client.logger.level('debug');
-client.start(error => {
+if(!IS_STANDALONE) {
+    client.start(error => {
 
-    console.log(error || 'NodeJS Eureka Started!');
+        console.log(error || 'NodeJS Eureka Started!');
 
-    app.get('/', function (req, res) {
-        res.send('Hello World!');
+        app.get('/info', function (req, res) {
+            res.send({status: 'UP'});
+        });
+
+        app.get('/health', function (req, res) {
+            res.send({status: 'UP', health: 'PERFECT'});
+        });
+
     });
+}
 
-    app.get('/info', function (req, res) {
-        res.send({status:'UP'});
-    });
-
-    app.get('/health', function (req, res) {
-        res.send({status:'UP',health:'PERFECT'});
-    });
-
+app.get('/', function (req, res) {
+    res.send('Hello World!');
 });
 
 app.listen(3000, function () {

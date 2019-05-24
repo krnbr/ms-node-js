@@ -7,6 +7,7 @@ var Eureka = require('eureka-js-client').Eureka;
 var app = express();
 var PORT = 3000;
 var HOST = 'localhost';
+var IS_STANDALONE = true;
 var client = new Eureka({
     instance: {
         app: 'ms-node-js',
@@ -34,17 +35,19 @@ var client = new Eureka({
     },
 });
 client.logger.level('debug');
-client.start(function (error) {
-    console.log(error || 'NodeJS Eureka Started!');
-    app.get('/', function (req, res) {
-        res.send('Hello World!');
+if (!IS_STANDALONE) {
+    client.start(function (error) {
+        console.log(error || 'NodeJS Eureka Started!');
+        app.get('/info', function (req, res) {
+            res.send({ status: 'UP' });
+        });
+        app.get('/health', function (req, res) {
+            res.send({ status: 'UP', health: 'PERFECT' });
+        });
     });
-    app.get('/info', function (req, res) {
-        res.send({ status: 'UP' });
-    });
-    app.get('/health', function (req, res) {
-        res.send({ status: 'UP', health: 'PERFECT' });
-    });
+}
+app.get('/', function (req, res) {
+    res.send('Hello World!');
 });
 app.listen(3000, function () {
     console.log('micro service listening on port 3000!');
