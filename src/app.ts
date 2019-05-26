@@ -7,12 +7,12 @@ const app: express.Application = express();
 
 const PORT = 3000;
 const HOST = 'localhost';
-const IS_STANDALONE:boolean = true;
+const IS_STANDALONE:boolean = false;
 
 const client = new Eureka({
     instance: {
         app: 'ms-node-js',
-        hostName: HOST,
+        hostName: HOST+":"+PORT,
         ipAddr: '127.0.0.1',
         vipAddress: 'ms-node-js',
         port: {

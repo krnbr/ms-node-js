@@ -7,11 +7,11 @@ var Eureka = require('eureka-js-client').Eureka;
 var app = express();
 var PORT = 3000;
 var HOST = 'localhost';
-var IS_STANDALONE = true;
+var IS_STANDALONE = false;
 var client = new Eureka({
     instance: {
         app: 'ms-node-js',
-        hostName: HOST,
+        hostName: HOST + ":" + PORT,
         ipAddr: '127.0.0.1',
         vipAddress: 'ms-node-js',
         port: {
