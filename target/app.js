@@ -12,6 +12,7 @@ var client = new Eureka({
     instance: {
         app: 'ms-node-js',
         hostName: HOST + ":" + PORT,
+        instanceId: HOST,
         ipAddr: '127.0.0.1',
         vipAddress: 'ms-node-js',
         port: {
